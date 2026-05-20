@@ -542,12 +542,6 @@ class SQL {
       return buildFragment(strings, values, (n) => {
         return adapter.type === "postgres" ? `$${n}` : "?";
       });
-      return new QueryResult((options) => {
-        if (options) {
-          return Promise.resolve(adapter.query(query, params, options));
-        }
-        return Promise.resolve(adapter.query(query, params));
-      });
     };
 
     // Add methods

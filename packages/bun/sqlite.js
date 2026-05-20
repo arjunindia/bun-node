@@ -125,14 +125,16 @@ class Statement {
     const params = this._normalizeParams(args.length === 1 ? args[0] : args);
     this._lastParams = params;
     const iter = this._stmt.iterate(...params);
-    if (this._classMap) {
+    const classMap = this._classMap;
+    if (classMap) {
       return {
         [Symbol.iterator]() {
+          const inner = iter[Symbol.iterator]();
           return {
             next() {
-              const { value, done } = iter[Symbol.iterator]().next();
+              const { value, done } = inner.next();
               if (done) return { done: true };
-              const obj = Object.create(this._classMap.prototype);
+              const obj = Object.create(classMap.prototype);
               Object.assign(obj, value);
               return { value: obj, done: false };
             },
@@ -198,6 +200,36 @@ class Statement {
   }
 }
 
+// --- SQL helpers ---
+
+function splitSQL(sql) {
+  const stmts = [];
+  let current = "";
+  let inString = false;
+  let stringChar = "";
+
+  for (let i = 0; i < sql.length; i++) {
+    const ch = sql[i];
+    if (inString) {
+      current += ch;
+      if (ch === stringChar) inString = false;
+    } else if (ch === "'" || ch === '"') {
+      inString = true;
+      stringChar = ch;
+      current += ch;
+    } else if (ch === ";") {
+      const trimmed = current.trim();
+      if (trimmed.length > 0) stmts.push(trimmed);
+      current = "";
+    } else {
+      current += ch;
+    }
+  }
+  const trimmed = current.trim();
+  if (trimmed.length > 0) stmts.push(trimmed);
+  return stmts;
+}
+
 // --- Database ---
 
 class Database {
@@ -250,11 +282,8 @@ class Database {
   }
 
   run(sql, params) {
-    // Support multi-statement by splitting on ;
-    const statements = sql
-      .split(";")
-      .map((s) => s.trim())
-      .filter((s) => s.length > 0);
+    // Support multi-statement by splitting on ; (string-aware)
+    const statements = splitSQL(sql);
 
     let lastResult;
     for (const s of statements) {
