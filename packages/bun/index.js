@@ -926,81 +926,72 @@ function indexOfLine(buf, offset = 0) {
   return -1;
 }
 
-// --- Exports ---
+// --- SQL ---
 
+export { SQL, SQLError, PostgresError, SQLiteError } from "./sql.js";
+
+// --- Singleton instances ---
+
+const stdin = new StdinBunFile();
+const stdout = new StdoutBunFile();
+const stderr = new StderrBunFile();
+
+// --- Named exports ---
+
+// File I/O
+export { file, write, stdin, stdout, stderr, BunFile, FileSink };
+
+// Properties
+export { version, revision, env, main, argv };
+
+// Timing
+export { sleep, sleepSync, nanoseconds };
+
+// UUID
+export { randomUUIDv7 };
+
+// System
+export { which };
+
+// Promise
+export { peek };
+
+// Comparison
+export { deepEquals };
+
+// Inspection
+export { inspect };
+
+// Strings
+export { escapeHTML, stringWidth, stripANSI, wrapAnsi };
+
+// URL conversion
+export { fileURLToPath, pathToFileURL };
+
+// Compression
+export { gzipSync, gunzipSync, deflateSync, inflateSync, gzip, gunzip, deflate, inflate };
+
+// Streams
+export { readableStreamToArrayBuffer, readableStreamToBytes, readableStreamToBlob, readableStreamToJSON, readableStreamToText, readableStreamToArray, readableStreamToFormData };
+
+// Resolution
+export { resolveSync };
+
+// Memory
+export { gc, allocUnsafe, concatArrayBuffers, indexOfLine };
+
+// Namespace object (Bun.file, Bun.sleep, etc.)
 export const bun = {
-  // File I/O
-  file,
-  write,
-  stdin: new StdinBunFile(),
-  stdout: new StdoutBunFile(),
-  stderr: new StderrBunFile(),
-
-  // Properties
-  version,
-  revision,
-  env,
-  main,
-  argv,
-
-  // Timing
-  sleep,
-  sleepSync,
-  nanoseconds,
-
-  // UUID
-  randomUUIDv7,
-
-  // System
-  which,
-
-  // Promise
-  peek,
-
-  // Comparison
-  deepEquals,
-
-  // Inspection
-  inspect,
-
-  // Strings
-  escapeHTML,
-  stringWidth,
-  stripANSI,
-  wrapAnsi,
-
-  // URL conversion
-  fileURLToPath,
-  pathToFileURL,
-
-  // Compression
-  gzipSync,
-  gunzipSync,
-  deflateSync,
-  inflateSync,
-  gzip,
-  gunzip,
-  deflate,
-  inflate,
-
-  // Streams
-  readableStreamToArrayBuffer,
-  readableStreamToBytes,
-  readableStreamToBlob,
-  readableStreamToJSON,
-  readableStreamToText,
-  readableStreamToArray,
-  readableStreamToFormData,
-
-  // Resolution
-  resolveSync,
-
-  // Memory
-  gc,
-  allocUnsafe,
-  concatArrayBuffers,
-  indexOfLine,
+  file, write, stdin, stdout, stderr, BunFile, FileSink,
+  version, revision, env, main, argv,
+  sleep, sleepSync, nanoseconds,
+  randomUUIDv7, which, peek, deepEquals, inspect,
+  escapeHTML, stringWidth, stripANSI, wrapAnsi,
+  fileURLToPath, pathToFileURL,
+  gzipSync, gunzipSync, deflateSync, inflateSync, gzip, gunzip, deflate, inflate,
+  readableStreamToArrayBuffer, readableStreamToBytes, readableStreamToBlob,
+  readableStreamToJSON, readableStreamToText, readableStreamToArray, readableStreamToFormData,
+  resolveSync, gc, allocUnsafe, concatArrayBuffers, indexOfLine,
 };
 
-export { BunFile, FileSink };
 export default bun;

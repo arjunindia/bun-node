@@ -26,6 +26,15 @@
     "./jsc": {
       "types": "./jsc.d.ts",
       "default": "./jsc.js"
+    },
+    "./sql": {
+      "types": "./sql.d.ts",
+      "default": "./sql.js"
     }
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "mysql2": "^3.22.3",
+    "postgres": "^3.4.9"
   }
 }
