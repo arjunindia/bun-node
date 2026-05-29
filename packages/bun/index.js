@@ -546,7 +546,7 @@ peek.status = function status(promise) {
 
 // --- Bun.deepEquals ---
 
-function deepEquals(a, b, strict = false) {
+function deepEquals(a, b, strict = false, seen = new WeakMap()) {
   if (Object.is(a, b)) return true;
 
   if (a === null || b === null || a === undefined || b === undefined) {
@@ -567,12 +567,15 @@ function deepEquals(a, b, strict = false) {
     return a.toString() === b.toString();
   }
 
+  // Cycle detection
+  if (seen.has(a)) return seen.get(a) === b;
+  seen.set(a, b);
+
   const keysA = Object.keys(a);
   const keysB = Object.keys(b);
 
   if (keysA.length !== keysB.length) {
     if (!strict) {
-      // In non-strict mode, check if all keys in b exist in a
       for (const key of keysB) {
         if (!keysA.includes(key) && b[key] !== undefined) return false;
       }
@@ -587,7 +590,7 @@ function deepEquals(a, b, strict = false) {
       if (a[key] !== undefined) return false;
       continue;
     }
-    if (!deepEquals(a[key], b[key], strict)) return false;
+    if (!deepEquals(a[key], b[key], strict, seen)) return false;
   }
 
   return true;
@@ -929,6 +932,39 @@ function indexOfLine(buf, offset = 0) {
 // --- SQL ---
 
 export { SQL, SQLError, PostgresError, SQLiteError } from "./sql.js";
+
+// --- Serve ---
+
+export { serve, Server } from "./serve.js";
+
+// --- Utility modules ---
+
+export { Glob } from "./glob.js";
+export { semver } from "./semver.js";
+export { TOML } from "./toml.js";
+export { markdown } from "./markdown.js";
+export { color } from "./color.js";
+export { Image } from "./image.js";
+export { Cookie, CookieMap } from "./cookies.js";
+export { CSRF } from "./csrf.js";
+export { test, describe, expect, jest, mock, setSystemTime, vi, beforeAll, beforeEach, afterAll, afterEach } from "./test.js";
+export { FFIType, suffix, dlopen, linkSymbols, CString, JSCallback, ptr, toBuffer } from "./ffi.js";
+export {
+  heapSize, heapStats, memoryUsage, estimateShallowMemoryUsageOf,
+  serialize, deserialize,
+  fullGC, edenGC, gcAndSweep, releaseWeakRefs, getProtectedObjects,
+  startSamplingProfiler, profile, totalCompileTime, numberOfDFGCompiles, reoptimizationRetryCount,
+  optimizeNextInvocation, noFTL, noOSRExitFuzzing,
+  jscDescribe, jscDescribeArray, isRope, callerSourceOrigin,
+  drainMicrotasks,
+  getRandomSeed, setRandomSeed,
+  setTimeZone,
+  startRemoteDebugger,
+} from "./jsc.js";
+export { Worker, isMainThread, setEnvironmentData, getEnvironmentData } from "./workers.js";
+export { spawn, spawnSync } from "./spawn.js";
+export { shell, $, ShellError } from "./shell.js";
+export { Transpiler } from "./transpiler.js";
 
 // --- Singleton instances ---
 

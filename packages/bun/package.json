@@ -30,11 +30,63 @@
     "./sql": {
       "types": "./sql.d.ts",
       "default": "./sql.js"
+    },
+    "./glob": {
+      "types": "./glob.d.ts",
+      "default": "./glob.js"
+    },
+    "./semver": {
+      "types": "./semver.d.ts",
+      "default": "./semver.js"
+    },
+    "./toml": {
+      "types": "./toml.d.ts",
+      "default": "./toml.js"
+    },
+    "./markdown": {
+      "types": "./markdown.d.ts",
+      "default": "./markdown.js"
+    },
+    "./color": {
+      "types": "./color.d.ts",
+      "default": "./color.js"
+    },
+    "./image": {
+      "types": "./image.d.ts",
+      "default": "./image.js"
+    },
+    "./cookies": {
+      "types": "./cookies.d.ts",
+      "default": "./cookies.js"
+    },
+    "./csrf": {
+      "types": "./csrf.d.ts",
+      "default": "./csrf.js"
+    },
+    "./shell": {
+      "types": "./shell.d.ts",
+      "default": "./shell.js"
+    },
+    "./serve": {
+      "types": "./serve.d.ts",
+      "default": "./serve.js"
+    },
+    "./transpiler": {
+      "types": "./transpiler.d.ts",
+      "default": "./transpiler.js"
     }
   },
   "dependencies": {
     "better-sqlite3": "^12.10.0",
+    "esbuild": "^0.28.0",
+    "fast-glob": "^3.3.3",
+    "koffi": "^3.0.1",
+    "marked": "^18.0.4",
     "mysql2": "^3.22.3",
-    "postgres": "^3.4.9"
+    "postgres": "^3.4.9",
+    "semver": "^7.8.1",
+    "sharp": "^0.34.5",
+    "smol-toml": "^1.6.1",
+    "ws": "^8.21.0"
   }
 }
